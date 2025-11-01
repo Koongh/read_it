@@ -4,67 +4,67 @@
 // algopy.arc4.ARC4Contract.approval_program() -> uint64:
 main:
     intcblock 0 1 2
-    bytecblock "user_points" 0x151f7c75 "" 0x72656465656d5f636f6465730000000000000000 0x72656465656d5f636f6465730000000000000001 0x72656465656d5f636f6465730000000000000002 0x72656465656d5f636f6465730000000000000003 0x72656465656d5f636f6465730000000000000004 "redeemed"
+    bytecblock 0x151f7c75 "user_points" "name_to_address" "" "redeemed" "user_balances" 0x72656465656d5f636f6465730000000000000000 0x72656465656d5f636f6465730000000000000001 0x72656465656d5f636f6465730000000000000002 0x72656465656d5f636f6465730000000000000003 0x72656465656d5f636f6465730000000000000004 "user_code"
     txn ApplicationID
     bnz main_after_if_else@2
-    // smart_contracts/read_it/contract.py:123-124
+    // smart_contracts/read_it/contract.py:320-321
     // # Initialize redeem codes with String() constructor
     // self.redeem_codes[UInt64(0)] = String("BOOK100A")
-    bytec_3 // 0x72656465656d5f636f6465730000000000000000
+    bytec 6 // 0x72656465656d5f636f6465730000000000000000
     box_del
     pop
-    bytec_3 // 0x72656465656d5f636f6465730000000000000000
+    bytec 6 // 0x72656465656d5f636f6465730000000000000000
     pushbytes "BOOK100A"
     box_put
-    // smart_contracts/read_it/contract.py:125
+    // smart_contracts/read_it/contract.py:322
     // self.redeem_codes[UInt64(1)] = String("BOOK100B")
-    bytec 4 // 0x72656465656d5f636f6465730000000000000001
+    bytec 7 // 0x72656465656d5f636f6465730000000000000001
     box_del
     pop
-    bytec 4 // 0x72656465656d5f636f6465730000000000000001
+    bytec 7 // 0x72656465656d5f636f6465730000000000000001
     pushbytes "BOOK100B"
     box_put
-    // smart_contracts/read_it/contract.py:126
+    // smart_contracts/read_it/contract.py:323
     // self.redeem_codes[UInt64(2)] = String("BOOK100C")
-    bytec 5 // 0x72656465656d5f636f6465730000000000000002
+    bytec 8 // 0x72656465656d5f636f6465730000000000000002
     box_del
     pop
-    bytec 5 // 0x72656465656d5f636f6465730000000000000002
+    bytec 8 // 0x72656465656d5f636f6465730000000000000002
     pushbytes "BOOK100C"
     box_put
-    // smart_contracts/read_it/contract.py:127
+    // smart_contracts/read_it/contract.py:324
     // self.redeem_codes[UInt64(3)] = String("BOOK100D")
-    bytec 6 // 0x72656465656d5f636f6465730000000000000003
+    bytec 9 // 0x72656465656d5f636f6465730000000000000003
     box_del
     pop
-    bytec 6 // 0x72656465656d5f636f6465730000000000000003
+    bytec 9 // 0x72656465656d5f636f6465730000000000000003
     pushbytes "BOOK100D"
     box_put
-    // smart_contracts/read_it/contract.py:128
+    // smart_contracts/read_it/contract.py:325
     // self.redeem_codes[UInt64(4)] = String("BOOK100E")
-    bytec 7 // 0x72656465656d5f636f6465730000000000000004
+    bytec 10 // 0x72656465656d5f636f6465730000000000000004
     box_del
     pop
-    bytec 7 // 0x72656465656d5f636f6465730000000000000004
+    bytec 10 // 0x72656465656d5f636f6465730000000000000004
     pushbytes "BOOK100E"
     box_put
 
 main_after_if_else@2:
-    // smart_contracts/read_it/contract.py:115
+    // smart_contracts/read_it/contract.py:310
     // class ReadIt(ARC4Contract):
     txn NumAppArgs
-    bz main___algopy_default_create@12
+    bz main___algopy_default_create@15
     txn OnCompletion
     !
     assert // OnCompletion must be NoOp
     txn ApplicationID
     assert
-    pushbytess 0xb28841c7 0x2c104f6d 0x7a1eb8d6 // method "join_competition(string)string", method "add_points(string,uint64)string", method "get_points(string)uint64"
+    pushbytess 0xb28841c7 0x2c104f6d 0x7a1eb8d6 0x732b73fc 0x42a5651e 0xd15c4a4d // method "join_competition(string)string", method "add_points(string,uint64)string", method "get_points(string)uint64", method "redeem_code(string,string,pay)string", method "get_balance(string)uint64", method "getMyBalance(string)uint64"
     txna ApplicationArgs 0
-    match join_competition add_points get_points
+    match join_competition add_points get_points redeem_code get_balance getMyBalance
     err
 
-main___algopy_default_create@12:
+main___algopy_default_create@15:
     txn OnCompletion
     !
     txn ApplicationID
@@ -77,7 +77,7 @@ main___algopy_default_create@12:
 
 // smart_contracts.read_it.contract.ReadIt.join_competition[routing]() -> void:
 join_competition:
-    // smart_contracts/read_it/contract.py:143
+    // smart_contracts/read_it/contract.py:340
     // @abimethod()
     txna ApplicationArgs 1
     dup
@@ -91,9 +91,9 @@ join_competition:
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
     dup
-    // smart_contracts/read_it/contract.py:145
+    // smart_contracts/read_it/contract.py:342
     // if name not in self.user_points:
-    bytec_0 // "user_points"
+    bytec_1 // "user_points"
     swap
     concat
     dup
@@ -101,14 +101,22 @@ join_competition:
     box_len
     bury 1
     bnz join_competition_else_body@3
-    // smart_contracts/read_it/contract.py:146
+    // smart_contracts/read_it/contract.py:343
     // self.user_points[name] = UInt64(0)
     intc_0 // 0
     itob
     dig 2
     swap
     box_put
-    // smart_contracts/read_it/contract.py:147
+    // smart_contracts/read_it/contract.py:344
+    // self.name_to_address[name] = Txn.sender  # Save address mapping
+    txn Sender
+    bytec_2 // "name_to_address"
+    dig 2
+    concat
+    swap
+    box_put
+    // smart_contracts/read_it/contract.py:345
     // return String("Welcome ") + name + String("! You joined the book competition.")
     pushbytes "Welcome "
     swap
@@ -117,7 +125,7 @@ join_competition:
     concat
 
 join_competition_after_inlined_smart_contracts.read_it.contract.ReadIt.join_competition@4:
-    // smart_contracts/read_it/contract.py:143
+    // smart_contracts/read_it/contract.py:340
     // @abimethod()
     dup
     len
@@ -125,7 +133,7 @@ join_competition_after_inlined_smart_contracts.read_it.contract.ReadIt.join_comp
     extract 6 2
     swap
     concat
-    bytec_1 // 0x151f7c75
+    bytec_0 // 0x151f7c75
     swap
     concat
     log
@@ -133,14 +141,14 @@ join_competition_after_inlined_smart_contracts.read_it.contract.ReadIt.join_comp
     return
 
 join_competition_else_body@3:
-    // smart_contracts/read_it/contract.py:149
+    // smart_contracts/read_it/contract.py:347
     // return String("User ") + name + String(" already joined.")
     pushbytes "User "
     swap
     concat
     pushbytes " already joined."
     concat
-    // smart_contracts/read_it/contract.py:143
+    // smart_contracts/read_it/contract.py:340
     // @abimethod()
     b join_competition_after_inlined_smart_contracts.read_it.contract.ReadIt.join_competition@4
 
@@ -149,8 +157,8 @@ join_competition_else_body@3:
 add_points:
     intc_0 // 0
     dupn 2
-    bytec_2 // ""
-    // smart_contracts/read_it/contract.py:151
+    bytec_3 // ""
+    // smart_contracts/read_it/contract.py:349
     // @abimethod()
     txna ApplicationArgs 1
     dup
@@ -172,17 +180,17 @@ add_points:
     assert // invalid number of bytes for arc4.uint64
     btoi
     swap
-    // smart_contracts/read_it/contract.py:153-154
+    // smart_contracts/read_it/contract.py:351-352
     // # Get current points
     // if name in self.user_points:
-    bytec_0 // "user_points"
+    bytec_1 // "user_points"
     swap
     concat
     dup
     box_len
     bury 1
     bz add_points_else_body@3
-    // smart_contracts/read_it/contract.py:155
+    // smart_contracts/read_it/contract.py:353
     // current_points = self.user_points[name]
     dup
     box_get
@@ -190,23 +198,23 @@ add_points:
     btoi
 
 add_points_after_if_else@4:
-    // smart_contracts/read_it/contract.py:159
+    // smart_contracts/read_it/contract.py:357
     // total = current_points + points
     dig 2
     +
-    // smart_contracts/read_it/contract.py:160
+    // smart_contracts/read_it/contract.py:358
     // self.user_points[name] = total
     dup
     itob
     dig 2
     swap
     box_put
-    // smart_contracts/read_it/contract.py:162
+    // smart_contracts/read_it/contract.py:360
     // if total >= UInt64(100) and name not in self.user_code:
     pushint 100 // 100
     >=
     bz add_points_after_if_else@9
-    pushbytes "user_code"
+    bytec 11 // "user_code"
     dig 3
     concat
     dup
@@ -214,19 +222,19 @@ add_points_after_if_else@4:
     box_len
     bury 1
     bnz add_points_after_if_else@9
-    // smart_contracts/read_it/contract.py:132
+    // smart_contracts/read_it/contract.py:329
     // for i in urange(5):  # Use urange instead of range
     intc_0 // 0
     bury 4
 
 add_points_for_header@12:
-    // smart_contracts/read_it/contract.py:132
+    // smart_contracts/read_it/contract.py:329
     // for i in urange(5):  # Use urange instead of range
     dig 3
     pushint 5 // 5
     <
     bz add_points_after_for@18
-    // smart_contracts/read_it/contract.py:133
+    // smart_contracts/read_it/contract.py:330
     // code = self.redeem_codes[i]  # i is already UInt64
     dig 3
     itob
@@ -239,10 +247,10 @@ add_points_for_header@12:
     cover 2
     bury 7
     assert // check self.redeem_codes entry exists
-    // smart_contracts/read_it/contract.py:134-135
+    // smart_contracts/read_it/contract.py:331-332
     // # Check if code exists in redeemed
     // if code in self.redeemed:
-    bytec 8 // "redeemed"
+    bytec 4 // "redeemed"
     swap
     concat
     dup
@@ -250,14 +258,14 @@ add_points_for_header@12:
     box_len
     bury 1
     bz add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_code@19
-    // smart_contracts/read_it/contract.py:136
+    // smart_contracts/read_it/contract.py:333
     // if self.redeemed[code] == UInt64(0):
     dig 6
     box_get
     assert // check self.redeemed entry exists
     btoi
     bz add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_code@19
-    // smart_contracts/read_it/contract.py:132
+    // smart_contracts/read_it/contract.py:329
     // for i in urange(5):  # Use urange instead of range
     dig 3
     intc_1 // 1
@@ -266,13 +274,13 @@ add_points_for_header@12:
     b add_points_for_header@12
 
 add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_code@19:
-    // smart_contracts/read_it/contract.py:164
+    // smart_contracts/read_it/contract.py:362
     // if code != String(""):
     dig 4
-    bytec_2 // ""
+    bytec_3 // ""
     !=
     bz add_points_else_body@8
-    // smart_contracts/read_it/contract.py:165
+    // smart_contracts/read_it/contract.py:363
     // self.user_code[name] = code
     dig 5
     dup
@@ -282,23 +290,23 @@ add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_
     dup
     cover 2
     box_put
-    // smart_contracts/read_it/contract.py:166
+    // smart_contracts/read_it/contract.py:364
     // self.redeemed[code] = UInt64(1)
-    bytec 8 // "redeemed"
+    bytec 4 // "redeemed"
     dig 1
     concat
     intc_1 // 1
     itob
     box_put
-    // smart_contracts/read_it/contract.py:168
+    // smart_contracts/read_it/contract.py:366
     // String("Congrats ") + name +
     pushbytes "Congrats "
     dig 4
     concat
-    // smart_contracts/read_it/contract.py:169
+    // smart_contracts/read_it/contract.py:367
     // String("! You reached 100 points and earned redeem code: ") + code
     pushbytes "! You reached 100 points and earned redeem code: "
-    // smart_contracts/read_it/contract.py:168-169
+    // smart_contracts/read_it/contract.py:366-367
     // String("Congrats ") + name +
     // String("! You reached 100 points and earned redeem code: ") + code
     concat
@@ -306,7 +314,7 @@ add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_
     concat
 
 add_points_after_inlined_smart_contracts.read_it.contract.ReadIt.add_points@10:
-    // smart_contracts/read_it/contract.py:151
+    // smart_contracts/read_it/contract.py:349
     // @abimethod()
     dup
     len
@@ -314,7 +322,7 @@ add_points_after_inlined_smart_contracts.read_it.contract.ReadIt.add_points@10:
     extract 6 2
     swap
     concat
-    bytec_1 // 0x151f7c75
+    bytec_0 // 0x151f7c75
     swap
     concat
     log
@@ -322,36 +330,36 @@ add_points_after_inlined_smart_contracts.read_it.contract.ReadIt.add_points@10:
     return
 
 add_points_else_body@8:
-    // smart_contracts/read_it/contract.py:172
+    // smart_contracts/read_it/contract.py:370
     // return name + String(" reached 100 points, but no redeem code left!")
     dig 2
     pushbytes " reached 100 points, but no redeem code left!"
     concat
-    // smart_contracts/read_it/contract.py:151
+    // smart_contracts/read_it/contract.py:349
     // @abimethod()
     b add_points_after_inlined_smart_contracts.read_it.contract.ReadIt.add_points@10
 
 add_points_after_for@18:
-    // smart_contracts/read_it/contract.py:141
+    // smart_contracts/read_it/contract.py:338
     // return String("")
-    bytec_2 // ""
+    bytec_3 // ""
     bury 5
-    // smart_contracts/read_it/contract.py:163
+    // smart_contracts/read_it/contract.py:361
     // code = self._get_available_code()
     b add_points_after_inlined_smart_contracts.read_it.contract.ReadIt._get_available_code@19
 
 add_points_after_if_else@9:
-    // smart_contracts/read_it/contract.py:174
+    // smart_contracts/read_it/contract.py:372
     // return String("Points added for ") + name
     pushbytes "Points added for "
     dig 3
     concat
-    // smart_contracts/read_it/contract.py:151
+    // smart_contracts/read_it/contract.py:349
     // @abimethod()
     b add_points_after_inlined_smart_contracts.read_it.contract.ReadIt.add_points@10
 
 add_points_else_body@3:
-    // smart_contracts/read_it/contract.py:157
+    // smart_contracts/read_it/contract.py:355
     // current_points = UInt64(0)
     intc_0 // 0
     b add_points_after_if_else@4
@@ -359,7 +367,7 @@ add_points_else_body@3:
 
 // smart_contracts.read_it.contract.ReadIt.get_points[routing]() -> void:
 get_points:
-    // smart_contracts/read_it/contract.py:176
+    // smart_contracts/read_it/contract.py:374
     // @abimethod()
     txna ApplicationArgs 1
     dup
@@ -372,16 +380,16 @@ get_points:
     ==
     assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
     extract 2 0
-    // smart_contracts/read_it/contract.py:178
+    // smart_contracts/read_it/contract.py:376
     // if name in self.user_points:
-    bytec_0 // "user_points"
+    bytec_1 // "user_points"
     swap
     concat
     dup
     box_len
     bury 1
     bz get_points_else_body@3
-    // smart_contracts/read_it/contract.py:179
+    // smart_contracts/read_it/contract.py:377
     // return self.user_points[name]
     dup
     box_get
@@ -389,10 +397,10 @@ get_points:
     btoi
 
 get_points_after_inlined_smart_contracts.read_it.contract.ReadIt.get_points@4:
-    // smart_contracts/read_it/contract.py:176
+    // smart_contracts/read_it/contract.py:374
     // @abimethod()
     itob
-    bytec_1 // 0x151f7c75
+    bytec_0 // 0x151f7c75
     swap
     concat
     log
@@ -400,9 +408,333 @@ get_points_after_inlined_smart_contracts.read_it.contract.ReadIt.get_points@4:
     return
 
 get_points_else_body@3:
-    // smart_contracts/read_it/contract.py:181
+    // smart_contracts/read_it/contract.py:379
     // return UInt64(0)
     intc_0 // 0
-    // smart_contracts/read_it/contract.py:176
+    // smart_contracts/read_it/contract.py:374
     // @abimethod()
     b get_points_after_inlined_smart_contracts.read_it.contract.ReadIt.get_points@4
+
+
+// smart_contracts.read_it.contract.ReadIt.redeem_code[routing]() -> void:
+redeem_code:
+    intc_0 // 0
+    dup
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    dup
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    swap
+    txn GroupIndex
+    intc_1 // 1
+    -
+    dup
+    gtxns TypeEnum
+    intc_1 // pay
+    ==
+    assert // transaction type is pay
+    // smart_contracts/read_it/contract.py:383-384
+    // # Payment Check
+    // assert mbrPay.sender == Txn.sender, "Sender mismatch"
+    dup
+    gtxns Sender
+    txn Sender
+    ==
+    assert // Sender mismatch
+    // smart_contracts/read_it/contract.py:385
+    // assert mbrPay.receiver == Global.current_application_address, "Invalid receiver"
+    dup
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    assert // Invalid receiver
+    // smart_contracts/read_it/contract.py:386
+    // assert mbrPay.amount > 0, "Zero Amount"
+    gtxns Amount
+    dup
+    cover 2
+    assert // Zero Amount
+    // smart_contracts/read_it/contract.py:388-389
+    // # Verify caller is the registered user
+    // if name in self.name_to_address:
+    bytec_2 // "name_to_address"
+    swap
+    concat
+    dup
+    box_len
+    bury 1
+    bz redeem_code_after_if_else@3
+    // smart_contracts/read_it/contract.py:390
+    // assert self.name_to_address[name] == Txn.sender, "Not authorized for this name"
+    dup
+    box_get
+    assert // check self.name_to_address entry exists
+    txn Sender
+    ==
+    assert // Not authorized for this name
+
+redeem_code_after_if_else@3:
+    // smart_contracts/read_it/contract.py:392-393
+    // # Check if user has this code assigned to them
+    // if name not in self.user_code:
+    bytec 11 // "user_code"
+    dig 4
+    concat
+    dup
+    bury 7
+    box_len
+    bury 1
+    bnz redeem_code_after_if_else@5
+    // smart_contracts/read_it/contract.py:394
+    // return String("Error: No redeem code assigned to ") + name
+    pushbytes "Error: No redeem code assigned to "
+    dig 4
+    concat
+
+redeem_code_after_inlined_smart_contracts.read_it.contract.ReadIt.redeem_code@15:
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    bytec_0 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+redeem_code_after_if_else@5:
+    // smart_contracts/read_it/contract.py:396
+    // user_assigned_code = self.user_code[name]
+    dig 5
+    box_get
+    assert // check self.user_code entry exists
+    // smart_contracts/read_it/contract.py:398-399
+    // # Verify the code matches
+    // if user_assigned_code != code:
+    dig 3
+    !=
+    bz redeem_code_after_if_else@7
+    // smart_contracts/read_it/contract.py:400
+    // return String("Error: Invalid redeem code")
+    pushbytes "Error: Invalid redeem code"
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    b redeem_code_after_inlined_smart_contracts.read_it.contract.ReadIt.redeem_code@15
+
+redeem_code_after_if_else@7:
+    // smart_contracts/read_it/contract.py:402-403
+    // # Check if code is valid and not already fully redeemed
+    // if code not in self.redeemed:
+    bytec 4 // "redeemed"
+    dig 3
+    concat
+    dup
+    bury 6
+    box_len
+    bury 1
+    bnz redeem_code_after_if_else@9
+    // smart_contracts/read_it/contract.py:404
+    // return String("Error: Code does not exist")
+    pushbytes "Error: Code does not exist"
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    b redeem_code_after_inlined_smart_contracts.read_it.contract.ReadIt.redeem_code@15
+
+redeem_code_after_if_else@9:
+    // smart_contracts/read_it/contract.py:406
+    // if self.redeemed[code] != UInt64(1):
+    dig 4
+    box_get
+    assert // check self.redeemed entry exists
+    btoi
+    intc_1 // 1
+    !=
+    bz redeem_code_after_if_else@11
+    // smart_contracts/read_it/contract.py:407
+    // return String("Error: Code already redeemed or invalid")
+    pushbytes "Error: Code already redeemed or invalid"
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    b redeem_code_after_inlined_smart_contracts.read_it.contract.ReadIt.redeem_code@15
+
+redeem_code_after_if_else@11:
+    // smart_contracts/read_it/contract.py:409-410
+    // # Mark code as fully redeemed (2 = used)
+    // self.redeemed[code] = UInt64(2)
+    intc_2 // 2
+    itob
+    dig 5
+    swap
+    box_put
+    // smart_contracts/read_it/contract.py:412-413
+    // # Process deposit
+    // if name in self.user_balances:
+    bytec 5 // "user_balances"
+    dig 4
+    concat
+    dup
+    box_len
+    bury 1
+    bz redeem_code_else_body@13
+    // smart_contracts/read_it/contract.py:414
+    // self.user_balances[name] += mbrPay.amount
+    dup
+    box_get
+    assert // check self.user_balances entry exists
+    btoi
+    dig 3
+    +
+    itob
+    box_put
+
+redeem_code_after_if_else@14:
+    // smart_contracts/read_it/contract.py:418
+    // return String("Success! Code redeemed and ") + String(" deposited for ") + name
+    pushbytes "Success! Code redeemed and  deposited for "
+    dig 4
+    concat
+    // smart_contracts/read_it/contract.py:381
+    // @abimethod()
+    b redeem_code_after_inlined_smart_contracts.read_it.contract.ReadIt.redeem_code@15
+
+redeem_code_else_body@13:
+    // smart_contracts/read_it/contract.py:416
+    // self.user_balances[name] = mbrPay.amount
+    dig 2
+    itob
+    box_put
+    b redeem_code_after_if_else@14
+
+
+// smart_contracts.read_it.contract.ReadIt.get_balance[routing]() -> void:
+get_balance:
+    // smart_contracts/read_it/contract.py:420
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/read_it/contract.py:422
+    // if name in self.user_balances:
+    bytec 5 // "user_balances"
+    swap
+    concat
+    dup
+    box_len
+    bury 1
+    bz get_balance_else_body@3
+    // smart_contracts/read_it/contract.py:423
+    // return self.user_balances[name]
+    dup
+    box_get
+    assert // check self.user_balances entry exists
+    btoi
+
+get_balance_after_inlined_smart_contracts.read_it.contract.ReadIt.get_balance@4:
+    // smart_contracts/read_it/contract.py:420
+    // @abimethod()
+    itob
+    bytec_0 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+get_balance_else_body@3:
+    // smart_contracts/read_it/contract.py:425
+    // return UInt64(0)
+    intc_0 // 0
+    // smart_contracts/read_it/contract.py:420
+    // @abimethod()
+    b get_balance_after_inlined_smart_contracts.read_it.contract.ReadIt.get_balance@4
+
+
+// smart_contracts.read_it.contract.ReadIt.getMyBalance[routing]() -> void:
+getMyBalance:
+    // smart_contracts/read_it/contract.py:427
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_2 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/read_it/contract.py:429-430
+    // # Verify caller owns this name
+    // if my_name not in self.name_to_address:
+    bytec_2 // "name_to_address"
+    dig 1
+    concat
+    dup
+    box_len
+    bury 1
+    assert // Name not registered
+    // smart_contracts/read_it/contract.py:433
+    // assert self.name_to_address[my_name] == Txn.sender, "Not your name"
+    box_get
+    pop
+    txn Sender
+    ==
+    assert // Not your name
+    // smart_contracts/read_it/contract.py:435
+    // if my_name in self.user_balances:
+    bytec 5 // "user_balances"
+    swap
+    concat
+    dup
+    box_len
+    bury 1
+    assert // You've not been deposited before
+    // smart_contracts/read_it/contract.py:436
+    // return self.user_balances[my_name]
+    box_get
+    pop
+    btoi
+    // smart_contracts/read_it/contract.py:427
+    // @abimethod()
+    itob
+    bytec_0 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
