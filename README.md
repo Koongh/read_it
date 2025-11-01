@@ -1,22 +1,46 @@
-# read_it
+# 📚 BookCompetitionWithRedeem — A Reward-Based Reading dApp on Algorand
 
-Welcome to your new AlgoKit project!
+## 🧠 Project Description
 
-This is your workspace root. A `workspace` in AlgoKit is an orchestrated collection of standalone projects (backends, smart contracts, frontend apps and etc).
+**BookCompetitionWithRedeem** is a decentralized application (dApp) built on the **Algorand blockchain** that promotes reading through a fun, point-based competition system.  
+Participants join a reading challenge, earn points, and unlock **redeemable codes** for reaching milestones.
 
-By default, `projects_root_path` parameter is set to `projects`. Which instructs AlgoKit CLI to create a new directory under `projects` directory when new project is instantiated via `algokit init` at the root of the workspace.
+This project demonstrates how to create **reward systems**, **user state tracking**, and **redeem logic** using **Algorand ARC4 smart contracts** — making it an excellent learning tool for blockchain beginners and developers.
 
-## Getting Started
+---
 
-To get started refer to `README.md` files in respective sub-projects in the `projects` directory.
+## 🚀 What It Does
 
-To learn more about algokit, visit [documentation](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md).
+- Users **join a book competition** on-chain.
+- Each participant earns points (added via contract interaction).
+- When a user reaches **100 points**, they automatically earn a **unique redeem code**.
+- Redeem codes can be **used once** to claim simulated rewards (like deposit bonuses).
+- The system ensures fairness — each code can be used only once and is bound to the rightful owner.
 
-### GitHub Codespaces
+---
 
-To get started execute:
+## ✨ Features
 
-1. `algokit generate devcontainer` - invoking this command from the root of this repository will create a `devcontainer.json` file with all the configuration needed to run this project in a GitHub codespace. [Run the repository inside a codespace](https://docs.github.com/en/codespaces/getting-started/quickstart) to get started.
-2. `algokit init` - invoke this command inside a github codespace to launch an interactive wizard to guide you through the process of creating a new AlgoKit project
+✅ **Join Competition** — Register a participant by name.  
+✅ **Earn Points** — Add points for reading progress or achievements.  
+✅ **Automatic Reward System** — Automatically assigns a redeem code when 100 points are reached.  
+✅ **Redeem Codes** — Claim on-chain rewards (simulated microAlgos).  
+✅ **Global State Tracking** — Maintains participant scores, codes, and redemption status transparently.  
+✅ **Beginner-Friendly ARC4 Smart Contract** — Clean and simple structure for learning Algorand contract logic.  
+✅ **Custom “Hello” Method** — Quick function to test smart contract interaction.
 
-Powered by [Copier templates](https://copier.readthedocs.io/en/stable/).
+---
+
+## 🌍 Deployed Smart Contract
+
+**Algorand Contract Link:** [XXX](XXX)
+
+---
+
+## 🧩 Smart Contract Code
+
+Below is the complete ARC4 contract logic written in **Python (Algopy)**:
+
+```python
+//paste your code
+```
